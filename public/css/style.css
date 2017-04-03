@@ -1,6 +1,12 @@
 body {
   background-color: black;
 }
+
 #the-string {
   display: none;
 }
+
+#the-check-call {
+  display: none;
+}
+
