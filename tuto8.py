@@ -12,11 +12,13 @@ class StringGenerator(object):
         return open('index.html')
 
 
-#@cherrypy.expose
+@cherrypy.expose
 class StringGeneratorWebService(object):
     expose = True
     @cherrypy.tools.accept(media='text/plain')
     def GET(self):
+        if not cherrypy.session.get('mystring'):
+            return "GET response needs a parameter my_string"
         return cherrypy.session['mystring']
 
     def POST(self, length=8):
