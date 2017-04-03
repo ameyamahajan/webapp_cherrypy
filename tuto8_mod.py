@@ -3,18 +3,16 @@ import random
 import string
 
 import cherrypy
-
+import time 
 
 class StringGenerator(object):
-    expose = True
     @cherrypy.expose
     def index(self):
-        return open('index.html')
+        return open('index_mod.html')
 
 
 @cherrypy.expose
 class StringGeneratorWebService(object):
-    expose = True
     @cherrypy.tools.accept(media='text/plain')
     def GET(self):
         if not cherrypy.session.get('mystring'):
@@ -32,6 +30,11 @@ class StringGeneratorWebService(object):
     def DELETE(self):
         cherrypy.session.pop('mystring', None)
 
+@cherrypy.expose
+class Check():
+   @cherrypy.tools.accept(media='text/plain')
+   def GET(self):
+       return open('foo.html')
 
 if __name__ == '__main__':
     conf = {
@@ -44,6 +47,11 @@ if __name__ == '__main__':
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')],
         },
+        '/check': {
+            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+            'tools.response_headers.on': True,
+            'tools.response_headers.headers': [('Content-Type', 'text/plain')],
+        },
         '/static': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': './public'
@@ -51,4 +59,5 @@ if __name__ == '__main__':
     }
     webapp = StringGenerator()
     webapp.generator = StringGeneratorWebService()
+    webapp.check = Check()
     cherrypy.quickstart(webapp, '/', conf)
