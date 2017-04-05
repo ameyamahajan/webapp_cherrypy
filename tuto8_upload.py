@@ -42,8 +42,9 @@ class Uploader():
         print("--"*5 +input_file + "--"*5)
 	print(type(input_file))
         f = open('XYZZ','wb')
-        with open(input_file) as inf:
+        with open(input_file, 'rb') as inf:
             f.write(inf)
+        f.close()
 	return input_file 
 
 
