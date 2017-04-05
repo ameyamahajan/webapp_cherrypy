@@ -35,18 +35,17 @@ class StringGeneratorWebService(object):
 
 
 
-
 @cherrypy.expose
 class Uploader():
-    def POST(self, input_file=None):
-        print("--"*5 +input_file + "--"*5)
-	print(type(input_file))
-        f = open('XYZZ','wb')
-        with open(input_file, 'rb') as inf:
-            f.write(inf)
-        f.close()
-	return input_file 
-
+    def POST(self, test, file_name='Default.pos'):
+        print("--"*10 + test.filename + "--"*10)
+        print("--"*10 + str(test.content_type) + "--"*10)
+        print(type(file_name))
+        print("--"*10 +file_name+ "--"*10)
+        with open(file_name, 'wb') as inf:
+            shutil.copyfileobj(test.file, inf)
+        return "Done !"  
+        
 
 if __name__ == '__main__':
     conf = {
